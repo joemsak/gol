@@ -8,19 +8,24 @@ RSpec.describe Gol::LivingCell do
   end
 
   it 'will die on the tick when it has 1 living neighbor' do
-    neighbor = Gol::LivingCell.new(double(:location))
-
-    location = double(:location, neighbors: [neighbor])
+    location = double(:location, neighbors: [double(:living_cell)])
     cell = Gol::LivingCell.new(location)
 
     expect(cell.stays_alive?).to be false
   end
 
   it 'will stay alive on the tick when it has 2 neighbors' do
-    neighbor1 = Gol::LivingCell.new(double(:location))
-    neighbor2 = Gol::LivingCell.new(double(:location))
+    location = double(:location, neighbors: [double(:living_cell1),
+                                             double(:living_cell2)])
+    cell = Gol::LivingCell.new(location)
 
-    location = double(:location, neighbors: [neighbor1, neighbor2])
+    expect(cell.stays_alive?).to be true
+  end
+
+  it 'will stay alive on the tick when it has 3 neighbors' do
+    location = double(:location, neighbors: [double(:living_cell1),
+                                             double(:living_cell2),
+                                             double(:living_cell3)])
     cell = Gol::LivingCell.new(location)
 
     expect(cell.stays_alive?).to be true

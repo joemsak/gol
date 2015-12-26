@@ -11,7 +11,7 @@ module Gol
     end
 
     def stays_alive?
-      location.neighbors.count == 2
+      location.neighbors.count > 1 && location.neighbors.count <= 3
     end
   end
 end
