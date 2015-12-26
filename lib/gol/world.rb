@@ -24,9 +24,4 @@ module Gol
     private
     attr_accessor :living_cells
   end
-
-  class LivingCell
-    def initialize(location)
-    end
-  end
 end
