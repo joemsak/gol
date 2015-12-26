@@ -11,7 +11,16 @@ module Gol
     end
 
     def stays_alive?
-      location.neighbors.count > 1 && location.neighbors.count <= 3
+      !under_populated? && !over_populated?
+    end
+
+    private
+    def under_populated?
+      location.neighbors.count <= 1
+    end
+
+    def over_populated?
+      location.neighbors.count > 3
     end
   end
 end
