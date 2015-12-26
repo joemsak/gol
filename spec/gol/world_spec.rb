@@ -26,4 +26,23 @@ RSpec.describe Gol::World do
       expect(world).to be_empty
     end
   end
+
+  context 'a world with a dead cell and 3 living neighbors who have no neighbors' do
+    it 'results in one living cell' do
+      world = Gol::World.empty
+
+      lonely_location = double(:location, neighbors: [])
+
+      neighbor1 = Gol::LivingCell.new(lonely_location)
+      neighbor2 = Gol::LivingCell.new(lonely_location)
+      neighbor3 = Gol::LivingCell.new(lonely_location)
+
+      location = double(:location, neighbors: [neighbor1, neighbor2, neighbor3])
+
+      world.add_dead(location)
+      world.tick
+
+      expect(world.living_cells.count).to eq(1)
+    end
+  end
 end
