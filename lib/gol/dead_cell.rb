@@ -1,13 +1,9 @@
 module Gol
   class DeadCell
-    attr_reader :location
+    include HasLocation
 
-    def initialize(location)
-      @location = location
-    end
-
-    def coming_to_life?
-      location.neighbors.count == 3
+    def alive_after_tick?
+      neighbors.count == 3
     end
 
     def alive?

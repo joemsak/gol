@@ -28,7 +28,17 @@ module Gol
     end
 
     def add_living(location)
-      @cells << LivingCell.new(location)
+      living_cell = LivingCell.new(location)
+
+      @cells << living_cell
+
+      binding.pry
+
+      cells.each do |cell|
+        if cell.location.adjacent?(location)
+          cell.add_neighbor(living_cell)
+        end
+      end
     end
 
     def add_dead(location)
@@ -48,8 +58,8 @@ module Gol
 
     def mark_cells_for_next_generation
       cells.each do |cell|
-        mark_for_dead(cell) unless cell.alive? && cell.stays_alive?
-        come_to_life(cell) if !cell.alive? && cell.coming_to_life?
+        mark_for_dead(cell) unless cell.alive_after_tick?
+        come_to_life(cell) if cell.alive_after_tick?
       end
     end
 

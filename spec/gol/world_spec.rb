@@ -10,7 +10,7 @@ RSpec.describe Gol::World do
 
     it 'is not empty after adding a living cell' do
       world = Gol::World.empty
-      world.add_living(double(:cell_location))
+      world.add_living(double(:cell_location, :adjacent? => false))
       expect(world).not_to be_empty
     end
   end
@@ -18,7 +18,7 @@ RSpec.describe Gol::World do
   context 'a world with one living cell in it' do
     it 'becomes empty on the next tick' do
       world = Gol::World.empty
-      location = double(:location, neighbors: [])
+      location = double(:location, :adjacent? => false)
 
       world.add_living(location)
       world.tick
@@ -31,15 +31,10 @@ RSpec.describe Gol::World do
     it 'results in one living cell' do
       world = Gol::World.empty
 
-      lonely_location = double(:location, neighbors: [])
-
-      neighbor1 = Gol::LivingCell.new(lonely_location)
-      neighbor2 = Gol::LivingCell.new(lonely_location)
-      neighbor3 = Gol::LivingCell.new(lonely_location)
-
-      location = double(:location, neighbors: [neighbor1, neighbor2, neighbor3])
-
-      world.add_dead(location)
+      world.add_dead(Gol::Location.new(0, 0))     # center
+      world.add_living(Gol::Location.new(1, 1))   # top right
+      world.add_living(Gol::Location.new(-1, 1))  # top left
+      world.add_living(Gol::Location.new(-1, -1)) # bottom left
       world.tick
 
       expect(world.living_cells.count).to eq(1)

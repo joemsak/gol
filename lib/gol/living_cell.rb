@@ -1,26 +1,22 @@
 module Gol
   class LivingCell
-    attr_reader :location
-
-    def initialize(location)
-       @location = location
-    end
+    include HasLocation
 
     def alive?
       true
     end
 
-    def stays_alive?
+    def alive_after_tick?
       !under_populated? && !over_populated?
     end
 
     private
     def under_populated?
-      location.neighbors.count <= 1
+      neighbors.count <= 1
     end
 
     def over_populated?
-      location.neighbors.count > 3
+      neighbors.count > 3
     end
   end
 end
