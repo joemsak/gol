@@ -5,8 +5,8 @@ module Gol
         send("#{k}=", v)
       end
 
-      @kill = []
-      @create = []
+      @dying = []
+      @birthing = []
     end
 
     def self.empty
@@ -22,20 +22,9 @@ module Gol
     end
 
     def tick
-      cells.each do |cell|
-        mark_for_dead(cell) unless cell.alive? && cell.stays_alive?
-        come_to_life(cell) if !cell.alive? && cell.coming_to_life?
-      end
-
-      kill.each do |cell|
-        cells.delete(cell)
-        add_dead(cell.location)
-      end
-
-      create.each do |cell|
-        cells.delete(cell)
-        add_living(cell.location)
-      end
+      mark_cells_for_next_generation
+      kill_dying_cells
+      create_birthing_cells
     end
 
     def add_living(location)
@@ -47,14 +36,35 @@ module Gol
     end
 
     private
-    attr_accessor :cells, :kill, :create
+    attr_accessor :cells, :dying, :birthing
 
     def mark_for_dead(cell)
-      @kill << cell
+      @dying << cell
     end
 
     def come_to_life(cell)
-      @create << cell
+      @birthing << cell
+    end
+
+    def mark_cells_for_next_generation
+      cells.each do |cell|
+        mark_for_dead(cell) unless cell.alive? && cell.stays_alive?
+        come_to_life(cell) if !cell.alive? && cell.coming_to_life?
+      end
+    end
+
+    def kill_dying_cells
+      dying.each do |cell|
+        cells.delete(cell)
+        add_dead(cell.location)
+      end
+    end
+
+    def create_birthing_cells
+      birthing.each do |cell|
+        cells.delete(cell)
+        add_living(cell.location)
+      end
     end
   end
 end
