@@ -3,7 +3,11 @@ module Gol
     attr_reader :location
 
     def initialize(location)
-      @location = location
+       @location = location
+    end
+
+    def alive?
+      true
     end
 
     def stays_alive?
